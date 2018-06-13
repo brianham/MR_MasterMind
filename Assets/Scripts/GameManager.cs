@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
-    public static GameController instance;
+    public static GameManager instance;
 
-    void Awake()
+    private void Awake()
     {
         // allows this class instance to behave like a singleton
         instance = this;
+
+        // Instantiate static prefab for test
     }
 
     // Use this for initialization
