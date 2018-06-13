@@ -11,7 +11,12 @@ public class LuisManager : MonoBehaviour
     public static LuisManager instance;
 
     //Substitute the value of luis Endpoint with your own End Point
-    string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2696bd47-6894-4b90-94fb-658a3ffb99fc?subscription-key=7cb4e840a3ff43c284cccae124b0d327&verbose=true&timezoneOffset=-480&q=";
+
+    // MasterMindLUIS 
+    //string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2696bd47-6894-4b90-94fb-658a3ffb99fc?subscription-key=7cb4e840a3ff43c284cccae124b0d327&verbose=true&timezoneOffset=-480&q=";
+
+    // BrianLanguageUnderstandingService
+    string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55cc38f-5070-450a-8d2d-8ae4239a6935?subscription-key=e87015cabeeb45dca44eb179d00eb275&verbose=true&timezoneOffset=-480&q=";
 
     private void Awake()
     {
