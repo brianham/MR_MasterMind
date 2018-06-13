@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 46376362}
   - component: {fileID: 46376361}
   - component: {fileID: 46376360}
+  - component: {fileID: 46376364}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -328,6 +329,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315bf021388739942b4b4a3ea1f02a0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &46376364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 46376354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac854b0fa2c67f4fa94647951a7d7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guessRowPrefab: {fileID: 1028702769705202, guid: e14c505d864305e468621a85a351c504,
+    type: 2}
 --- !u!1 &51215257
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,7 +764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &2099470049
 MeshRenderer:
   m_ObjectHideFlags: 0
