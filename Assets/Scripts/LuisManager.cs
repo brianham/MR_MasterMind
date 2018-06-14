@@ -80,7 +80,7 @@ public class LuisManager : MonoBehaviour
 
     private void AnalyseResponseElements(AnalysedQuery aQuery)
     {
-        Debug.Log("LuisManager.AnalyseResponseElements");
+        Debug.Log("LuisManager.AnalyseResponseElements intent:" + aQuery.topScoringIntent.intent);
 
         string topIntent = aQuery.topScoringIntent.intent;
 
