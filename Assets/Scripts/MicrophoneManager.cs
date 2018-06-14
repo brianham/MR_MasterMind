@@ -15,6 +15,8 @@ public class MicrophoneManager : MonoBehaviour
     // Use this for initialization
     private void Awake()
     {
+        Debug.Log("MicrophoneManager.Awake");
+
         // allows this class instance to behave like a singleton
         instance = this;
     }
@@ -42,7 +44,7 @@ public class MicrophoneManager : MonoBehaviour
         dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
         dictationRecognizer.DictationError += DictationRecognizer_DictationError;
         dictationRecognizer.Start();
-        Debug.Log("Capturing Audio...");
+        Debug.Log("MicrophoneManager - Capturing Audio...");
     }
 
     /// <summary>
@@ -50,6 +52,7 @@ public class MicrophoneManager : MonoBehaviour
     /// </summary>
     private void DictationRecognizer_DictationResult(string dictationCaptured, ConfidenceLevel confidence)
     {
+        Debug.Log("MicrophoneManager.DictationRecognizer_DictationResult");
         StartCoroutine(LuisManager.instance.SubmitRequestToLuis(dictationCaptured));
         Debug.Log("Dictation: " + dictationCaptured);
         dictationText.text = dictationCaptured;

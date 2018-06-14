@@ -20,7 +20,7 @@ public class Gaze : MonoBehaviour
                 gazedObject = hit.transform.gameObject;
 
                 // Set the gazedTarget in the Behaviours class
-                Behaviours.instance.gazedTarget = gazedObject;
+                //Behaviours.instance.gazedTarget = gazedObject;
             }
         }
         else
@@ -34,7 +34,7 @@ public class Gaze : MonoBehaviour
     {
         if (gazedObject != null)
         {
-            Behaviours.instance.gazedTarget = null;
+            //Behaviours.instance.gazedTarget = null;
             gazedObject = null;
         }
     }

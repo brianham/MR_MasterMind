@@ -13,13 +13,15 @@ public class LuisManager : MonoBehaviour
     //Substitute the value of luis Endpoint with your own End Point
 
     // MasterMindLUIS 
-    //string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2696bd47-6894-4b90-94fb-658a3ffb99fc?subscription-key=7cb4e840a3ff43c284cccae124b0d327&verbose=true&timezoneOffset=-480&q=";
+    string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2696bd47-6894-4b90-94fb-658a3ffb99fc?subscription-key=7cb4e840a3ff43c284cccae124b0d327&verbose=true&timezoneOffset=-480&q=";
 
     // BrianLanguageUnderstandingService
-    string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55cc38f-5070-450a-8d2d-8ae4239a6935?subscription-key=e87015cabeeb45dca44eb179d00eb275&verbose=true&timezoneOffset=-480&q=";
+    //string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55cc38f-5070-450a-8d2d-8ae4239a6935?subscription-key=e87015cabeeb45dca44eb179d00eb275&verbose=true&timezoneOffset=-480&q=";
 
     private void Awake()
     {
+        Debug.Log("LuisManager.Awake");
+
         // allows this class instance to behave like a singleton
         instance = this;
     }
@@ -78,6 +80,8 @@ public class LuisManager : MonoBehaviour
 
     private void AnalyseResponseElements(AnalysedQuery aQuery)
     {
+        Debug.Log("LuisManager.AnalyseResponseElements");
+
         string topIntent = aQuery.topScoringIntent.intent;
 
         // Create a dictionary of entities associated with their type
@@ -92,45 +96,84 @@ public class LuisManager : MonoBehaviour
         switch (aQuery.topScoringIntent.intent)
         {
             case "ChangeObjectColor":
-                string targetForColor = null;
-                string color = null;
-
-                foreach (var pair in entityDic)
                 {
-                    if (pair.Key == "target")
+                    string targetForColor = null;
+                    string color = null;
+
+                    foreach (var pair in entityDic)
                     {
-                        targetForColor = pair.Value;
+                        if (pair.Key == "target")
+                        {
+                            targetForColor = pair.Value;
+                        }
+                        else if (pair.Key == "color")
+                        {
+                            color = pair.Value;
+                        }
                     }
-                    else if (pair.Key == "color")
-                    {
-                        color = pair.Value;
-                    }
-                }
 
-                Behaviours.instance.ChangeTargetColor(targetForColor, color);
-                break;
+                    Debug.Log(string.Format("LuisManager.AnalyseResponseElements target:{0}, color:{1}", targetForColor, color));                    
 
-            case "ChangeObjectSize":
-                string targetForSize = null;
-                foreach (var pair in entityDic)
-                {
-                    if (pair.Key == "target")
-                    {
-                        targetForSize = pair.Value;
-                    }
+                    GameManager.instance.ChangeTargetColor(targetForColor, color);
+                    break;
                 }
-
-                if (entityDic.ContainsKey("upsize") == true)
-                {
-                    Behaviours.instance.UpSizeTarget(targetForSize);
-                }
-                else if (entityDic.ContainsKey("downsize") == true)
-                {
-                    Behaviours.instance.DownSizeTarget(targetForSize);
-                }
-                break;
         }
     }
+    //private void AnalyseResponseElements(AnalysedQuery aQuery)
+    //{
+    //    string topIntent = aQuery.topScoringIntent.intent;
+
+    //    // Create a dictionary of entities associated with their type
+    //    Dictionary<string, string> entityDic = new Dictionary<string, string>();
+
+    //    foreach (EntityData ed in aQuery.entities)
+    //    {
+    //        entityDic.Add(ed.type, ed.entity);
+    //    }
+
+    //    // Depending on the topmost recognised intent, read the entities name
+    //    switch (aQuery.topScoringIntent.intent)
+    //    {
+    //        case "ChangeObjectColor":
+    //            string targetForColor = null;
+    //            string color = null;
+
+    //            foreach (var pair in entityDic)
+    //            {
+    //                if (pair.Key == "target")
+    //                {
+    //                    targetForColor = pair.Value;
+    //                }
+    //                else if (pair.Key == "color")
+    //                {
+    //                    color = pair.Value;
+    //                }
+    //            }
+
+    //            Behaviours.instance.ChangeTargetColor(targetForColor, color);
+    //            break;
+
+    //        case "ChangeObjectSize":
+    //            string targetForSize = null;
+    //            foreach (var pair in entityDic)
+    //            {
+    //                if (pair.Key == "target")
+    //                {
+    //                    targetForSize = pair.Value;
+    //                }
+    //            }
+
+    //            if (entityDic.ContainsKey("upsize") == true)
+    //            {
+    //                Behaviours.instance.UpSizeTarget(targetForSize);
+    //            }
+    //            else if (entityDic.ContainsKey("downsize") == true)
+    //            {
+    //                Behaviours.instance.DownSizeTarget(targetForSize);
+    //            }
+    //            break;
+    //    }
+    //}
 }
 
 [System.Serializable] //this class represents the LUIS response

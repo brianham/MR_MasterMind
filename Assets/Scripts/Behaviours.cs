@@ -60,23 +60,23 @@ public class Behaviours : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Reduces the size of the target GameObject by providing its name
-    /// </summary>
-    public void DownSizeTarget(string targetName)
-    {
-        GameObject foundTarget = FindTarget(targetName);
-        foundTarget.transform.localScale -= new Vector3(0.5F, 0.5F, 0.5F);
-    }
+    ///// <summary>
+    ///// Reduces the size of the target GameObject by providing its name
+    ///// </summary>
+    //public void DownSizeTarget(string targetName)
+    //{
+    //    GameObject foundTarget = FindTarget(targetName);
+    //    foundTarget.transform.localScale -= new Vector3(0.5F, 0.5F, 0.5F);
+    //}
 
-    /// <summary>
-    /// Increases the size of the target GameObject by providing its name
-    /// </summary>
-    public void UpSizeTarget(string targetName)
-    {
-        GameObject foundTarget = FindTarget(targetName);
-        foundTarget.transform.localScale += new Vector3(0.5F, 0.5F, 0.5F);
-    }
+    ///// <summary>
+    ///// Increases the size of the target GameObject by providing its name
+    ///// </summary>
+    //public void UpSizeTarget(string targetName)
+    //{
+    //    GameObject foundTarget = FindTarget(targetName);
+    //    foundTarget.transform.localScale += new Vector3(0.5F, 0.5F, 0.5F);
+    //}
 
     /// <summary>
     /// Determines which obejct reference is the target GameObject by providing its name
