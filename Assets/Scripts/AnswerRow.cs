@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class AnswerRow : MonoBehaviour {
@@ -86,8 +87,34 @@ public class AnswerRow : MonoBehaviour {
     
     public AnswerStatus CheckAnswer(AnswerRow solution)
     {
-        // todo - set status string
-        return AnswerStatus.Incorrect;
+        bool incorrect = false;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < GameManager.ANSWER_COUNT; i++)
+        {
+            if (colors[i] == solution.colors[i])
+            {
+                sb.Append(string.Format("Position {0} correct,", i + 1));
+            }
+            else
+            {
+                sb.Append(string.Format("Position {0} incorrect,", i + 1));
+                incorrect = true;
+            }
+        }
+
+        // Update display string
+        this.statusString = sb.ToString();
+
+        if (incorrect) return AnswerStatus.Incorrect;
+        return AnswerStatus.Correct;
+    }
+
+    private void OnDestroy()
+    {
+        for (int i = 0; i < GameManager.ANSWER_COUNT; i++)
+        {
+            if (renderers[i] != null) Destroy(renderers[i]);
+        }
     }
 
     #endregion

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 
     public const int TRY_COUNT = 5;
     public const int ANSWER_COUNT = 4;
+    public const float rowDepth = 0.15f;
 
     private AnswerRow solution = new AnswerRow(GameColor.Blue, GameColor.Yellow, GameColor.Blue, GameColor.Yellow);
 
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour {
     //private int firstItemTopLeft = Point
 
     private Vector3 initialTopLeft = new Vector3(0f, 0.0f, 1.0f);
+    private Vector3 currentTopLeft = new Vector3(0f, 0.0f, 1.0f);
 
     private GameObject[] answers = null;
 
@@ -30,16 +32,6 @@ public class GameManager : MonoBehaviour {
         // allows this class instance to behave like a singleton
         instance = this;        
     }
-
-    private void OnDestroy()
-    {
-        //Destroy(item1Material);
-        //Destroy(item2Material);
-        //Destroy(item3Material);
-        //Destroy(item4Material);
-    }
-
-
 
     public void StartNewGame()
     {
@@ -73,22 +65,18 @@ public class GameManager : MonoBehaviour {
 
     public void StartNewGame2()
     {
-        // for each answer submission
-        // instantiate prefab from object reference (can get controller from component)
-        // materials will be bound at runtime
-
         answers = new GameObject[TRY_COUNT];
         currentAnswerIndex = 0;
-
-        // Instantiate new answer row prefab, add to references as well as scene
-        answers[currentAnswerIndex] = GetNewAnswerRow();        
+        answers[currentAnswerIndex] = GetNewAnswerRow(initialTopLeft);
     }
 
-    public GameObject GetNewAnswerRow()
+    public GameObject GetNewAnswerRow(Vector3 topLeft)
     {
         // Instantiate static prefab for test
-        Quaternion initialRotation = Quaternion.Euler(0, -90, 0);
-        return GameObject.Instantiate(answerRowPrefab, initialTopLeft, initialRotation);
+        Quaternion initialRotation = Quaternion.Euler(0, -90, 0);        
+        GameObject newAnswerRow = GameObject.Instantiate(answerRowPrefab, topLeft, initialRotation);
+        currentTopLeft = new Vector3(topLeft.x, topLeft.y, topLeft.z + rowDepth);
+        return newAnswerRow;
     }
 
     public void SubmitAnswer()
@@ -107,6 +95,15 @@ public class GameManager : MonoBehaviour {
             {
                 Debug.Log("GameManager.SubmitAnswer Valid Answer");
                 var answerStatus = answerRow.CheckAnswer(solution);
+
+                if (answerStatus == AnswerStatus.Correct)
+                {
+                    // Win case
+                } else
+                {
+                    // create next row
+                    answers[++currentAnswerIndex] = GetNewAnswerRow(currentTopLeft);
+                }
             } else
             {
                 Debug.Log("GameManager.SubmitAnswer Invalid Answer");
@@ -314,6 +311,13 @@ public static class TestClass
 }
 
 
+//private void OnDestroy()
+//{
+//    //Destroy(item1Material);
+//    //Destroy(item2Material);
+//    //Destroy(item3Material);
+//    //Destroy(item4Material);
+//}
 
 
 /// <summary>
