@@ -67,6 +67,6 @@ public class MicrophoneManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        dictationRecognizer = null;
+        //dictationRecognizer = null;
     }
 }

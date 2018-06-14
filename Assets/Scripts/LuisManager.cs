@@ -89,7 +89,10 @@ public class LuisManager : MonoBehaviour
 
         foreach (EntityData ed in aQuery.entities)
         {
-            entityDic.Add(ed.type, ed.entity);
+            if (!entityDic.ContainsKey(ed.type))
+            {
+                entityDic.Add(ed.type, ed.entity);
+            }            
         }
 
         // Depending on the topmost recognised intent, read the entities name
@@ -136,7 +139,11 @@ public class LuisManager : MonoBehaviour
 
                     Debug.Log(string.Format("LuisManager.AnalyseResponseElements target:{0}, color:{1}", target, color));                    
 
-                    GameManager.instance.ChangeTargetColor2(target, color);
+                    if (!string.IsNullOrEmpty(target) && !string.IsNullOrEmpty(color))
+                    {
+                        GameManager.instance.ChangeTargetColor2(target, color);
+                    }
+                    
                     break;
                 }
             case "ChangeObjectColorShortcutIntent":

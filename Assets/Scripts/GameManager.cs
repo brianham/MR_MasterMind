@@ -83,9 +83,8 @@ public class GameManager : MonoBehaviour {
     public GameObject GetNewAnswerRow()
     {
         // Instantiate static prefab for test
-        Vector3 initialPosition = initialTopLeft;
         Quaternion initialRotation = Quaternion.Euler(0, -90, 0);
-        return GameObject.Instantiate(answerRowPrefab, initialPosition, initialRotation);
+        return GameObject.Instantiate(answerRowPrefab, initialTopLeft, initialRotation);
     }
 
     public void SubmitAnswer2()
@@ -141,9 +140,9 @@ public class GameManager : MonoBehaviour {
 
     public void ChangeTargetColor2(string targetName, string colorName)
     {
-        if (currentAnswerIndex <= 0) return;
+        if (currentAnswerIndex < 0) return;
 
-        Debug.Log(string.Format("GameManager.ChangeTargetColor target: {0}, color: {1}", targetName, colorName));
+        Debug.Log(string.Format("GameManager.ChangeTargetColor2 target: {0}, color: {1}", targetName, colorName));
 
         // Get current prefab gameobject
         GameObject answerRowPrefab = answers[currentAnswerIndex];
