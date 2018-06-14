@@ -4,62 +4,102 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    public const int TRY_COUNT = 5;
+
+    private int currentAnswerIndex = -1;
+    //private int firstItemTopLeft = Point
+
+    private Vector3 initialTopLeft = new Vector3(0f, 1.0f, 1.0f);
+
+    private GameObject[] answers = null;
+
     public static GameManager instance;
 
-    public GameObject guessRowPrefab = null;
 
-    private GameObject currentGuessRow = null;
-    private RowController rowController = null;
+    public GameObject answerRowPrefab = null;
 
-    private Material item1Material = null;
-    private Material item2Material = null;
-    private Material item3Material = null;
-    private Material item4Material = null;
 
     private void Awake()
     {
         Debug.Log("GameManager.Awake");
 
         // allows this class instance to behave like a singleton
-        instance = this;
-
-        // Instantiate static prefab for test
-        Vector3 initialPosition = new Vector3(0f, 0.0f, 1f);
-        Quaternion initialRotation = Quaternion.Euler(0, -90, 0);
-
-        currentGuessRow = GameObject.Instantiate(guessRowPrefab, initialPosition, initialRotation);
-        rowController = currentGuessRow.GetComponent<RowController>();
-        
-
-        item1Material = rowController.item1.material;
-        item2Material = rowController.item2.material;
-        item3Material = rowController.item3.material;
-        item4Material = rowController.item4.material;
-
-        //rowController.item1.enabled = false;
-        //rowController.item2.enabled = false;
-        //rowController.item3.enabled = false;
-        //rowController.item4.enabled = false;
-
-        item1Material.color = Color.black;
-        item2Material.color = Color.black;
-        item3Material.color = Color.black;
-        item4Material.color = Color.black;
-
-
+        instance = this;        
     }
 
     private void OnDestroy()
     {
-        Destroy(item1Material);
-        Destroy(item2Material);
-        Destroy(item3Material);
-        Destroy(item4Material);
+        //Destroy(item1Material);
+        //Destroy(item2Material);
+        //Destroy(item3Material);
+        //Destroy(item4Material);
+    }
+
+
+
+    public void StartNewGame()
+    {
+
+
+
+        //Debug.Log("GameManager.StartNewGame");
+
+        //// Instantiate static prefab for test
+        //Vector3 initialPosition = new Vector3(0f, 0.0f, 1f);
+        //Quaternion initialRotation = Quaternion.Euler(0, -90, 0);
+
+        //currentAnswerRow = GameObject.Instantiate(answerRowPrefab, initialPosition, initialRotation);
+        //rowController = currentAnswerRow.GetComponent<RowController>();
+
+        //item1Material = rowController.item1.material;
+        //item2Material = rowController.item2.material;
+        //item3Material = rowController.item3.material;
+        //item4Material = rowController.item4.material;
+
+        ////rowController.item1.enabled = false;
+        ////rowController.item2.enabled = false;
+        ////rowController.item3.enabled = false;
+        ////rowController.item4.enabled = false;
+
+        //item1Material.color = Color.black;
+        //item2Material.color = Color.black;
+        //item3Material.color = Color.black;
+        //item4Material.color = Color.black;
+    }
+
+    public void StartNewGame2()
+    {
+        // for each answer submission
+        // instantiate prefab from object reference (can get controller from component)
+        // materials will be bound at runtime
+
+        answers = new GameObject[TRY_COUNT];
+        currentAnswerIndex = 0;
+
+        // Instantiate new answer row prefab, add to references as well as scene
+        answers[currentAnswerIndex] = GetNewAnswerRow();        
+    }
+
+    public GameObject GetNewAnswerRow()
+    {
+        // Instantiate static prefab for test
+        Vector3 initialPosition = initialTopLeft;
+        Quaternion initialRotation = Quaternion.Euler(0, -90, 0);
+        return GameObject.Instantiate(answerRowPrefab, initialPosition, initialRotation);
+    }
+
+    public void SubmitAnswer2()
+    {
+
+    }
+
+    public void ResetGame()
+    {
+
     }
 
     public void ChangeTargetColor(string targetName, string colorName)
     {
-        //Debug.Log($"GameManager.ChangeTargetColor target: {targetName}, color: {colorName}");
         Debug.Log(string.Format("GameManager.ChangeTargetColor target: {0}, color: {1}", targetName, colorName));
 
         var targetMaterial = FindTarget(targetName);
@@ -69,8 +109,6 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Changing color " + colorName + " to target: " + targetMaterial.name);
-
             switch (colorName)
             {
                 case "red":
@@ -101,55 +139,118 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private Material FindTarget(string name)
+    public void ChangeTargetColor2(string targetName, string colorName)
     {
-        //Debug.Log($"GameManager.FindTarget name: {name}");
-        Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
+        if (currentAnswerIndex <= 0) return;
 
-        switch (name)
+        Debug.Log(string.Format("GameManager.ChangeTargetColor target: {0}, color: {1}", targetName, colorName));
+
+        // Get current prefab gameobject
+        GameObject answerRowPrefab = answers[currentAnswerIndex];
+
+        // Get prefab script (reference to renderer and material
+        AnswerRow answerRow = answerRowPrefab.GetComponent<AnswerRow>();
+
+        var targetMaterial = FindTarget2(targetName);
+
+        if (targetMaterial == null)
         {
-            case "first item": return item1Material;
-            case "second item": return item2Material;
-            case "third item": return item3Material;
-            case "fourth item": return item4Material;
-            default: return null; 
+            Debug.Log("GameManager.ChangeTargetColor2 target is null");
+        } else
+        {
+            switch (colorName)
+            {
+                case "red":
+                    {
+                        targetMaterial.color = Color.red;
+                        break;
+                    }
+                case "blue":
+                    {
+                        targetMaterial.color = Color.blue;
+                        break;
+                    }
+                case "green":
+                    {
+                        targetMaterial.color = Color.green;
+                        break;
+                    }
+                case "yellow":
+                    {
+                        targetMaterial.color = Color.yellow;
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
         }
     }
-    /// <summary>
-    /// Determines which obejct reference is the target GameObject by providing its name
-    /// </summary>
-    //private GameObject FindTarget(string name)
-    //{
-    //    GameObject targetAsGO = null;
 
-    //    switch (name)
-    //    {
-    //        case "sphere":
-    //            targetAsGO = sphere;
-    //            break;
+    public void ChangeTargetColorShortcut(string color1, string color2, string color3, string color4)
+    {
+        if (currentAnswerIndex <= 0) return;
+    }
 
-    //        case "cylinder":
-    //            targetAsGO = cylinder;
-    //            break;
+    public void SubmitAnswer()
+    {
+        Debug.Log("GameManager.SubmitAnswer");
+    }
 
-    //        case "cube":
-    //            targetAsGO = cube;
-    //            break;
+    private Material FindTarget(string name)
+    {
+        //Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
 
-    //        case "this": // as an example of target words that the user may use when looking at an object
-    //        case "it":  // as this is the default, these are not actually needed in this example
-    //        case "that":
-    //        default: // if the target name is none of those above, check if the user is looking at something
-    //            if (gazedTarget != null)
-    //            {
-    //                targetAsGO = gazedTarget;
-    //            }
-    //            break;
-    //    }
-    //    return targetAsGO;
-    //}
+        //switch (name)
+        //{
+        //    case "PositionOne": return item1Material;
+        //    case "PositionTwo": return item2Material;
+        //    case "PositionThree": return item3Material;
+        //    case "PositionFour": return item4Material;
+        //    default: return null;
+        //}
+        return null;
+    }
+
+    private Material FindTarget2(string name)
+    {
+        Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
+
+        // Get current prefab gameobject
+        GameObject answerRowPrefab = answers[currentAnswerIndex];
+
+        // Get prefab script (reference to renderer and material
+        AnswerRow answerRow = answerRowPrefab.GetComponent<AnswerRow>();
+        
+        switch (name)
+        {
+            case "PositionOne": return answerRow.renderers[0].material;
+            case "PositionTwo": return answerRow.renderers[1].material;
+            case "PositionThree": return answerRow.renderers[2].material;
+            case "PositionFour": return answerRow.renderers[3].material;
+            default: return null;
+        }
+    }
+
+
 }
 
+public enum GameColor
+{
+    NotSet,
+    Blue,
+    Red,
+    Green,
+    Yellow
+}
+
+public enum AnswerStatus
+{
+    NotSet,
+    Incorrect,
+    Correct
+}
 
 public static class TestClass
 {
@@ -159,3 +260,52 @@ public static class TestClass
 
     }
 }
+
+
+
+
+/// <summary>
+/// Determines which obejct reference is the target GameObject by providing its name
+/// </summary>
+//private GameObject FindTarget(string name)
+//{
+//    GameObject targetAsGO = null;
+
+//    switch (name)
+//    {
+//        case "sphere":
+//            targetAsGO = sphere;
+//            break;
+
+//        case "cylinder":
+//            targetAsGO = cylinder;
+//            break;
+
+//        case "cube":
+//            targetAsGO = cube;
+//            break;
+
+//        case "this": // as an example of target words that the user may use when looking at an object
+//        case "it":  // as this is the default, these are not actually needed in this example
+//        case "that":
+//        default: // if the target name is none of those above, check if the user is looking at something
+//            if (gazedTarget != null)
+//            {
+//                targetAsGO = gazedTarget;
+//            }
+//            break;
+//    }
+//    return targetAsGO;
+//}
+
+
+
+
+
+//private GameObject currentAnswerRow = null;
+//private RowController rowController = null;
+
+//private Material item1Material = null;
+//private Material item2Material = null;
+//private Material item3Material = null;
+//private Material item4Material = null;

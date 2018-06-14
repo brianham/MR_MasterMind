@@ -13,8 +13,8 @@ public class LuisManager : MonoBehaviour
     //Substitute the value of luis Endpoint with your own End Point
 
     // MasterMindLUIS 
-    string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2696bd47-6894-4b90-94fb-658a3ffb99fc?subscription-key=7cb4e840a3ff43c284cccae124b0d327&verbose=true&timezoneOffset=-480&q=";
-
+    //string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/2696bd47-6894-4b90-94fb-658a3ffb99fc?subscription-key=7cb4e840a3ff43c284cccae124b0d327&verbose=true&timezoneOffset=-480&q=";
+    string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/11c79c29-8289-45ff-9c97-797655aaed8b?subscription-key=1ec44d85ed7a4152b3f4e4a5c3c17bfa&verbose=true&timezoneOffset=0&q=";
     // BrianLanguageUnderstandingService
     //string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55cc38f-5070-450a-8d2d-8ae4239a6935?subscription-key=e87015cabeeb45dca44eb179d00eb275&verbose=true&timezoneOffset=-480&q=";
 
@@ -95,26 +95,65 @@ public class LuisManager : MonoBehaviour
         // Depending on the topmost recognised intent, read the entities name
         switch (aQuery.topScoringIntent.intent)
         {
-            case "ChangeObjectColor":
+            case "ChangeObjectColorIntent":
                 {
-                    string targetForColor = null;
+                    string target = null;
                     string color = null;
 
                     foreach (var pair in entityDic)
                     {
-                        if (pair.Key == "target")
+                        switch (pair.Key)
                         {
-                            targetForColor = pair.Value;
+                            case "PositionOne":
+                            case "PositionTwo":
+                            case "PositionThree":
+                            case "PositionFour":                            
+                                {
+                                    target = pair.Key;
+                                    break;
+                                }
+                            case "color":
+                                {
+                                    color = pair.Value;
+                                    break;
+                                }
+                            case "target":
+                                {
+                                    //todo
+                                    break;
+                                }
+
                         }
-                        else if (pair.Key == "color")
-                        {
-                            color = pair.Value;
-                        }
+                        //if (pair.Key == "target")
+                        //{
+                        //    targetForColor = pair.Value;
+                        //}
+                        //else if (pair.Key == "color")
+                        //{
+                        //    color = pair.Value;
+                        //}
                     }
 
-                    Debug.Log(string.Format("LuisManager.AnalyseResponseElements target:{0}, color:{1}", targetForColor, color));                    
+                    Debug.Log(string.Format("LuisManager.AnalyseResponseElements target:{0}, color:{1}", target, color));                    
 
-                    GameManager.instance.ChangeTargetColor(targetForColor, color);
+                    GameManager.instance.ChangeTargetColor2(target, color);
+                    break;
+                }
+            case "ChangeObjectColorShortcutIntent":
+                {
+                    Debug.Log(string.Format("LuisManager.AnalyseResponseElements.ChangeObjectColorShortcutIntent ", null));
+                    GameManager.instance.ChangeTargetColorShortcut("", "", "", "");
+                    break;
+                }
+            case "GameStartIntent":
+                {
+                    //GameManager.instance.StartNewGame();
+                    GameManager.instance.StartNewGame2();
+                    break;
+                }
+            case "SubmitAnswerIntent":
+                {
+                    GameManager.instance.SubmitAnswer();
                     break;
                 }
         }

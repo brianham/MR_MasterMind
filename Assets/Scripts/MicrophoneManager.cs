@@ -11,6 +11,7 @@ public class MicrophoneManager : MonoBehaviour
     private AudioSource audioSource;        //AudioSource component, provides access to mic
     private DictationRecognizer dictationRecognizer;  //Component converting speech to text
     public TextMesh dictationText; //a UI object used to debug dictation result
+    private Coroutine request;
 
     // Use this for initialization
     private void Awake()
@@ -53,6 +54,7 @@ public class MicrophoneManager : MonoBehaviour
     private void DictationRecognizer_DictationResult(string dictationCaptured, ConfidenceLevel confidence)
     {
         Debug.Log("MicrophoneManager.DictationRecognizer_DictationResult");
+        //request = StartCoroutine(LuisManager.instance.SubmitRequestToLuis(dictationCaptured));
         StartCoroutine(LuisManager.instance.SubmitRequestToLuis(dictationCaptured));
         Debug.Log("Dictation: " + dictationCaptured);
         dictationText.text = dictationCaptured;
@@ -61,5 +63,10 @@ public class MicrophoneManager : MonoBehaviour
     private void DictationRecognizer_DictationError(string error, int hresult)
     {
         Debug.Log("Dictation exception: " + error);
+    }
+
+    private void OnDestroy()
+    {
+        dictationRecognizer = null;
     }
 }
