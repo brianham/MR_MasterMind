@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class AnswerRow : MonoBehaviour {
 
-    // single prefab
-    // 4 materials
-    // 4 colors
-
     public Renderer[] renderers = null;
 
     #region Private Fields
-
-    //private GameObject answerRowPrefab = null;    
+ 
     private GameColor[] colors = null;
     private string statusString = string.Empty;
 
@@ -93,11 +88,11 @@ public class AnswerRow : MonoBehaviour {
         {
             if (colors[i] == solution.colors[i])
             {
-                sb.Append(string.Format("Position {0} correct,", i + 1));
+                sb.Append(string.Format("P{0} correct, ", i + 1));
             }
             else
             {
-                sb.Append(string.Format("Position {0} incorrect,", i + 1));
+                sb.Append(string.Format("P{0} incorrect, ", i + 1));
                 incorrect = true;
             }
         }
