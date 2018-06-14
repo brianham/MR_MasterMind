@@ -80,9 +80,14 @@ public class LuisManager : MonoBehaviour
 
     private void AnalyseResponseElements(AnalysedQuery aQuery)
     {
-        Debug.Log("LuisManager.AnalyseResponseElements intent:" + aQuery.topScoringIntent.intent);
+        if (aQuery == null || aQuery.topScoringIntent == null || aQuery.topScoringIntent.intent == null)
+        {
+            Debug.Log("LuisManager.AnalyseResponseElements no intent");
+            return;
+        }
 
         string topIntent = aQuery.topScoringIntent.intent;
+        Debug.Log("LuisManager.AnalyseResponseElements intent:" + topIntent);
 
         // Create a dictionary of entities associated with their type
         Dictionary<string, string> entityDic = new Dictionary<string, string>();

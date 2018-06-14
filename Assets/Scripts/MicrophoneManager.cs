@@ -5,7 +5,6 @@ using UnityEngine.Windows.Speech;
 
 public class MicrophoneManager : MonoBehaviour
 {
-
     public static MicrophoneManager instance; //help to access instance of this object
     private int frequency = 44100;      //recording frequency of mic
     private AudioSource audioSource;        //AudioSource component, provides access to mic
@@ -67,6 +66,6 @@ public class MicrophoneManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        //dictationRecognizer = null;
+        dictationRecognizer.Dispose();
     }
 }

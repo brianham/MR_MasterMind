@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
     public const int TRY_COUNT = 5;
+    public const int ANSWER_COUNT = 4;
+
+    private AnswerRow solution = new AnswerRow(GameColor.Blue, GameColor.Yellow, GameColor.Blue, GameColor.Yellow);
 
     private int currentAnswerIndex = -1;
     //private int firstItemTopLeft = Point
 
-    private Vector3 initialTopLeft = new Vector3(0f, 1.0f, 1.0f);
+    private Vector3 initialTopLeft = new Vector3(0f, 0.0f, 1.0f);
 
     private GameObject[] answers = null;
 
@@ -87,9 +91,31 @@ public class GameManager : MonoBehaviour {
         return GameObject.Instantiate(answerRowPrefab, initialTopLeft, initialRotation);
     }
 
-    public void SubmitAnswer2()
+    public void SubmitAnswer()
     {
+        Debug.Log("GameManager.SubmitAnswer");
 
+        try
+        {
+            // Get current prefab gameobject
+            GameObject answerRowPrefab = answers[currentAnswerIndex];
+
+            // Get prefab script (reference to renderer and material
+            AnswerRow answerRow = answerRowPrefab.GetComponent<AnswerRow>();
+
+            if (answerRow.IsValid())
+            {
+                Debug.Log("GameManager.SubmitAnswer Valid Answer");
+                var answerStatus = answerRow.CheckAnswer(solution);
+            } else
+            {
+                Debug.Log("GameManager.SubmitAnswer Invalid Answer");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(string.Format("GameManager.SubmitAnswer Error: {0}", ex.Message));
+        }
     }
 
     public void ResetGame()
@@ -150,6 +176,16 @@ public class GameManager : MonoBehaviour {
         // Get prefab script (reference to renderer and material
         AnswerRow answerRow = answerRowPrefab.GetComponent<AnswerRow>();
 
+        // Get targetColor enum
+        GameColor targetColor = GetGameColorForString(colorName);
+
+        // Get index for target
+        int index = GetIndexForTargetName(targetName);
+
+        // Set answer row color
+        answerRow.SetByPosition(index, targetColor);
+
+        // Get target material
         var targetMaterial = FindTarget2(targetName);
 
         if (targetMaterial == null)
@@ -192,11 +228,6 @@ public class GameManager : MonoBehaviour {
         if (currentAnswerIndex <= 0) return;
     }
 
-    public void SubmitAnswer()
-    {
-        Debug.Log("GameManager.SubmitAnswer");
-    }
-
     private Material FindTarget(string name)
     {
         //Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
@@ -232,7 +263,29 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private GameColor GetGameColorForString(string color)
+    {
+        switch (color)
+        {
+            case "red": return GameColor.Red;
+            case "blue": return GameColor.Blue;
+            case "green": return GameColor.Green;
+            case "yellow": return GameColor.Yellow;
+            default: return GameColor.NotSet;
+        }
+    }
 
+    private int GetIndexForTargetName(string targetName)
+    {
+        switch (targetName)
+        {
+            case "PositionOne": return 0;
+            case "PositionTwo": return 1;
+            case "PositionThree": return 2;
+            case "PositionFour": return 3;
+            default: return -1;
+        }
+    }
 }
 
 public enum GameColor
