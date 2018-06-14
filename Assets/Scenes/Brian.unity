@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac854b0fa2c67f4fa94647951a7d7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  answerRowPrefab: {fileID: 1409290942461488, guid: d808891879390914ebf5ee4706242c5e,
+  answerRowPrefab: {fileID: 1170617267153276, guid: 59ba9c42ae8f2884184789f38332c87a,
     type: 2}
 --- !u!1 &51215257
 GameObject:
@@ -594,7 +594,7 @@ TextMesh:
   m_Anchor: 0
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 50
+  m_FontSize: 40
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
@@ -642,8 +642,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1654930406}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.56, y: 0.86999965, z: 14.5}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalPosition: {x: -1.93, y: 0.51, z: 14.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
