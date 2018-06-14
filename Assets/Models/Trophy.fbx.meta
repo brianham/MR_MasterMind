@@ -1,22 +1,28 @@
 fileFormatVersion: 2
-guid: 0035d8b77d28b964a8526722453f0d6c
-timeCreated: 1528909558
+guid: 2ff061576e8d7104da44ca41949db0cc
+timeCreated: 1529001652
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2100000: No Name
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Wine
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: No Name
-    second: {fileID: 2100000, guid: 453f0da7d14a2d54fa6ff3ea9ed1cf9c, type: 2}
+    100000: Camera
+    100002: Lamp
+    100004: polySurface1
+    100006: //RootNode
+    400000: Camera
+    400002: Lamp
+    400004: polySurface1
+    400006: //RootNode
+    2000000: Camera
+    2100000: lambert3SG
+    2100002: blinn1SG
+    2300000: polySurface1
+    2300002: //RootNode
+    3300000: polySurface1
+    3300002: //RootNode
+    4300000: polySurface1
+    10800000: Lamp
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
