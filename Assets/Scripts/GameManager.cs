@@ -3,16 +3,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public const int TRY_COUNT = 5;
+    public const int TRY_COUNT = 3;
     public const int ANSWER_COUNT = 4;
     public const float rowDepth = 0.15f;
 
     public GameObject answerRowPrefab = null;
     public GameObject trophy = null;
+    public GameObject mooseHead = null;
 
     private AnswerRow solution = new AnswerRow(GameColor.Blue, GameColor.Yellow, GameColor.Blue, GameColor.Yellow);
     private int currentAnswerIndex = -1;
-    private Vector3 initialTopLeft = new Vector3(0f, 1.0f, 1.0f);
+    private Vector3 initialTopLeft = new Vector3(0f, .5f, 1.5f);
     private Vector3 currentTopLeft = new Vector3(0f, 0.0f, 1.0f);
     private GameObject[] answers = null;
 
@@ -28,9 +29,8 @@ public class GameManager : MonoBehaviour {
 
     public void StartNewGame()
     {
-        var trophyRenderer = trophy.GetComponent<Renderer>();
-        trophyRenderer.enabled = false;
-
+        ShowHideWinMessage(false);
+        ShowHideLoseMessage(false);
         answers = new GameObject[TRY_COUNT];
         currentAnswerIndex = 0;
         answers[currentAnswerIndex] = GetNewAnswerRow(initialTopLeft);
@@ -65,15 +65,25 @@ public class GameManager : MonoBehaviour {
                 if (answerStatus == AnswerStatus.Correct)
                 {
                     // Win case
-                    var trophyRenderer = trophy.GetComponent<Renderer>();
-                    trophyRenderer.enabled = true;
+                    ShowHideWinMessage(true);
 
+                    // Clear answers
                     ClearAnswers();
                 }
                 else
                 {
-                    // create next row
-                    answers[++currentAnswerIndex] = GetNewAnswerRow(currentTopLeft);
+                    if (currentAnswerIndex + 1 >= GameManager.TRY_COUNT)
+                    {
+                        ShowHideLoseMessage(true);
+
+                        // Clear answers
+                        ClearAnswers();
+                    }
+                    else
+                    {
+                        // create next row
+                        answers[++currentAnswerIndex] = GetNewAnswerRow(currentTopLeft);
+                    }
                 }
             } else
             {
@@ -217,6 +227,18 @@ public class GameManager : MonoBehaviour {
 
         GameObject o5 = answers[4];
         if (o5 != null) Destroy(o5);
+    }
+
+    private void ShowHideWinMessage(bool show)
+    {
+        var trophyRenderer = trophy.GetComponent<Renderer>();
+        trophyRenderer.enabled = show ? true : false;
+    }
+
+    private void ShowHideLoseMessage(bool show)
+    {
+        var moose = mooseHead.GetComponent<Renderer>();
+        moose.enabled = show ? true : false;
     }
 }
 
