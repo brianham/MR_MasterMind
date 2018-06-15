@@ -5,19 +5,18 @@ public class GameManager : MonoBehaviour {
 
     public const int TRY_COUNT = 3;
     public const int ANSWER_COUNT = 4;
-    public const float rowDepth = 0.15f;
+    public const float ROW_DEPTH = 0.15f;
 
     public GameObject answerRowPrefab = null;
     public GameObject trophy = null;
     public GameObject mooseHead = null;
+    public static GameManager instance;
 
     private AnswerRow solution = new AnswerRow(GameColor.Blue, GameColor.Yellow, GameColor.Blue, GameColor.Yellow);
     private int currentAnswerIndex = -1;
     private Vector3 initialTopLeft = new Vector3(0f, .5f, 1.5f);
     private Vector3 currentTopLeft = new Vector3(0f, 0.0f, 1.0f);
-    private GameObject[] answers = null;
-
-    public static GameManager instance;
+    private GameObject[] answers = null;    
 
     private void Awake()
     {
@@ -38,10 +37,9 @@ public class GameManager : MonoBehaviour {
 
     public GameObject GetNewAnswerRow(Vector3 topLeft)
     {
-        // Instantiate static prefab for test
         Quaternion initialRotation = Quaternion.Euler(0, -90, 0);        
         GameObject newAnswerRow = GameObject.Instantiate(answerRowPrefab, topLeft, initialRotation);
-        currentTopLeft = new Vector3(topLeft.x, topLeft.y, topLeft.z + rowDepth);
+        currentTopLeft = new Vector3(topLeft.x, topLeft.y, topLeft.z + ROW_DEPTH);
         return newAnswerRow;
     }
 
@@ -267,7 +265,7 @@ public static class TestClass
     }
 }
 
-
+#region cleanup
 //private void OnDestroy()
 //{
 //    //Destroy(item1Material);
@@ -379,3 +377,4 @@ public static class TestClass
 //    //}
 //    return null;
 //}
+#endregion
