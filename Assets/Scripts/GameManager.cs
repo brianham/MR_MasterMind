@@ -91,10 +91,14 @@ public class GameManager : MonoBehaviour {
             // Get prefab script (reference to renderer and material
             AnswerRow answerRow = answerRowPrefab.GetComponent<AnswerRow>();
 
+            // Get answer text
+            //answerRowPrefab.GetComponent<>();
+
             if (answerRow.IsValid())
             {
                 Debug.Log("GameManager.SubmitAnswer Valid Answer");
                 var answerStatus = answerRow.CheckAnswer(solution);
+
 
                 if (answerStatus == AnswerStatus.Correct)
                 {

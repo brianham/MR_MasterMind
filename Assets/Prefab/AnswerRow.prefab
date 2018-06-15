@@ -506,6 +506,7 @@ MonoBehaviour:
   - {fileID: 23416649924213614}
   - {fileID: 23420532478334386}
   - {fileID: 23749460426617620}
+  statusTextMesh: {fileID: 102432931063070732}
 --- !u!135 &135119784821782044
 SphereCollider:
   m_ObjectHideFlags: 1

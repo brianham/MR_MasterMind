@@ -6,11 +6,11 @@ using UnityEngine;
 public class AnswerRow : MonoBehaviour {
 
     public Renderer[] renderers = null;
+    public TextMesh statusTextMesh;
 
     #region Private Fields
- 
-    private GameColor[] colors = null;
-    private string statusString = string.Empty;
+
+    private GameColor[] colors = null; 
 
     #endregion
 
@@ -23,16 +23,6 @@ public class AnswerRow : MonoBehaviour {
         colors[1] = color2;
         colors[2] = color3;
         colors[3] = color4;
-    }
-
-    #endregion
-
-    #region Public Properties
-
-    public string StatusString
-    {
-        private set { this.statusString = value; }
-        get { return ""; }
     }
 
     #endregion
@@ -98,7 +88,7 @@ public class AnswerRow : MonoBehaviour {
         }
 
         // Update display string
-        this.statusString = sb.ToString();
+        this.statusTextMesh.text = sb.ToString();
 
         if (incorrect) return AnswerStatus.Incorrect;
         return AnswerStatus.Correct;
