@@ -79,6 +79,18 @@ public class AnswerRow : MonoBehaviour {
         return AnswerStatus.Correct;
     }
 
+    public void InitCorrectAnswers(AnswerRow previous, AnswerRow solution)
+    {
+        for (int i = 0; i < GameManager.ANSWER_COUNT; i++)
+        {
+            if (previous.colors[i] == solution.colors[i])
+            {
+                colors[i] = previous.colors[i];
+                renderers[i].material.color = previous.renderers[i].material.color;
+            }
+        }
+    }
+
     private void OnDestroy()
     {
         for (int i = 0; i < GameManager.ANSWER_COUNT; i++)

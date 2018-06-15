@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour {
                 {
                     if (currentAnswerIndex + 1 >= GameManager.TRY_COUNT)
                     {
+                        // You lose, exceeded try count
                         ShowHideLoseMessage(true);
 
                         // Clear answers
@@ -79,8 +80,17 @@ public class GameManager : MonoBehaviour {
                     }
                     else
                     {
-                        // create next row
-                        answers[++currentAnswerIndex] = GetNewAnswerRow(currentTopLeft);
+                        // Create next row
+                        GameObject newAnswerRowPrefab = GetNewAnswerRow(currentTopLeft);
+
+                        // Get script
+                        AnswerRow newAnswerRow = newAnswerRowPrefab.GetComponent<AnswerRow>();
+
+                        // Init new row with correct answers
+                        newAnswerRow.InitCorrectAnswers(answerRow, solution);
+
+                        // Add to answers collection
+                        answers[++currentAnswerIndex] = newAnswerRowPrefab;
                     }
                 }
             } else
