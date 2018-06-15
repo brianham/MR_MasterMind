@@ -9,21 +9,16 @@ public class GameManager : MonoBehaviour {
     public const int ANSWER_COUNT = 4;
     public const float rowDepth = 0.15f;
 
+    public GameObject answerRowPrefab = null;
+    public GameObject trophy = null;
+
     private AnswerRow solution = new AnswerRow(GameColor.Blue, GameColor.Yellow, GameColor.Blue, GameColor.Yellow);
-
     private int currentAnswerIndex = -1;
-    //private int firstItemTopLeft = Point
-
-    private Vector3 initialTopLeft = new Vector3(0f, 0.0f, 1.0f);
+    private Vector3 initialTopLeft = new Vector3(0f, 1.0f, 1.0f);
     private Vector3 currentTopLeft = new Vector3(0f, 0.0f, 1.0f);
-
     private GameObject[] answers = null;
 
     public static GameManager instance;
-
-
-    public GameObject answerRowPrefab = null;
-
 
     private void Awake()
     {
@@ -65,6 +60,9 @@ public class GameManager : MonoBehaviour {
 
     public void StartNewGame2()
     {
+        var trophyRenderer = trophy.GetComponent<Renderer>();
+        trophyRenderer.enabled = false;
+
         answers = new GameObject[TRY_COUNT];
         currentAnswerIndex = 0;
         answers[currentAnswerIndex] = GetNewAnswerRow(initialTopLeft);
@@ -91,19 +89,21 @@ public class GameManager : MonoBehaviour {
             // Get prefab script (reference to renderer and material
             AnswerRow answerRow = answerRowPrefab.GetComponent<AnswerRow>();
 
-            // Get answer text
-            //answerRowPrefab.GetComponent<>();
-
             if (answerRow.IsValid())
             {
                 Debug.Log("GameManager.SubmitAnswer Valid Answer");
                 var answerStatus = answerRow.CheckAnswer(solution);
 
-
                 if (answerStatus == AnswerStatus.Correct)
                 {
                     // Win case
-                } else
+                    var trophyRenderer = trophy.GetComponent<Renderer>();
+                    trophyRenderer.enabled = true;
+
+                    //ClearAnswers();
+                    //answers = null;
+                }
+                else
                 {
                     // create next row
                     answers[++currentAnswerIndex] = GetNewAnswerRow(currentTopLeft);
@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour {
 
     public void ResetGame()
     {
-
+        StartNewGame2();
     }
 
     public void ChangeTargetColor(string targetName, string colorName)
@@ -285,6 +285,15 @@ public class GameManager : MonoBehaviour {
             case "PositionThree": return 2;
             case "PositionFour": return 3;
             default: return -1;
+        }
+    }
+
+    private void ClearAnswers()
+    {
+        for (int i = 0; i < answers.Length; i++)
+        {
+            if (answers[i] != null) DestroyImmediate(answers[i]);
+            //answers = null;
         }
     }
 }
