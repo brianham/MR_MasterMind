@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -29,36 +27,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void StartNewGame()
-    {
-
-
-
-        //Debug.Log("GameManager.StartNewGame");
-
-        //// Instantiate static prefab for test
-        //Vector3 initialPosition = new Vector3(0f, 0.0f, 1f);
-        //Quaternion initialRotation = Quaternion.Euler(0, -90, 0);
-
-        //currentAnswerRow = GameObject.Instantiate(answerRowPrefab, initialPosition, initialRotation);
-        //rowController = currentAnswerRow.GetComponent<RowController>();
-
-        //item1Material = rowController.item1.material;
-        //item2Material = rowController.item2.material;
-        //item3Material = rowController.item3.material;
-        //item4Material = rowController.item4.material;
-
-        ////rowController.item1.enabled = false;
-        ////rowController.item2.enabled = false;
-        ////rowController.item3.enabled = false;
-        ////rowController.item4.enabled = false;
-
-        //item1Material.color = Color.black;
-        //item2Material.color = Color.black;
-        //item3Material.color = Color.black;
-        //item4Material.color = Color.black;
-    }
-
-    public void StartNewGame2()
     {
         var trophyRenderer = trophy.GetComponent<Renderer>();
         trophyRenderer.enabled = false;
@@ -100,8 +68,7 @@ public class GameManager : MonoBehaviour {
                     var trophyRenderer = trophy.GetComponent<Renderer>();
                     trophyRenderer.enabled = true;
 
-                    //ClearAnswers();
-                    //answers = null;
+                    ClearAnswers();
                 }
                 else
                 {
@@ -121,51 +88,11 @@ public class GameManager : MonoBehaviour {
 
     public void ResetGame()
     {
-        StartNewGame2();
+        ClearAnswers();
+        StartNewGame();
     }
 
     public void ChangeTargetColor(string targetName, string colorName)
-    {
-        Debug.Log(string.Format("GameManager.ChangeTargetColor target: {0}, color: {1}", targetName, colorName));
-
-        var targetMaterial = FindTarget(targetName);
-        if (targetMaterial == null)
-        {
-            Debug.Log("GameManager.ChangeTargetColor target is null");
-        }
-        else
-        {
-            switch (colorName)
-            {
-                case "red":
-                    {
-                        targetMaterial.color = Color.red;
-                        break;
-                    }
-                case "blue":
-                    {
-                        targetMaterial.color = Color.blue;
-                        break;
-                    }
-                case "green":
-                    {
-                        targetMaterial.color = Color.green;
-                        break;
-                    }
-                case "yellow":
-                    {
-                        targetMaterial.color = Color.yellow;
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
-    }
-
-    public void ChangeTargetColor2(string targetName, string colorName)
     {
         if (currentAnswerIndex < 0) return;
 
@@ -187,7 +114,7 @@ public class GameManager : MonoBehaviour {
         answerRow.SetByPosition(index, targetColor);
 
         // Get target material
-        var targetMaterial = FindTarget2(targetName);
+        var targetMaterial = FindTarget(targetName);
 
         if (targetMaterial == null)
         {
@@ -228,23 +155,8 @@ public class GameManager : MonoBehaviour {
     {
         if (currentAnswerIndex <= 0) return;
     }
-
+    
     private Material FindTarget(string name)
-    {
-        //Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
-
-        //switch (name)
-        //{
-        //    case "PositionOne": return item1Material;
-        //    case "PositionTwo": return item2Material;
-        //    case "PositionThree": return item3Material;
-        //    case "PositionFour": return item4Material;
-        //    default: return null;
-        //}
-        return null;
-    }
-
-    private Material FindTarget2(string name)
     {
         Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
 
@@ -290,11 +202,21 @@ public class GameManager : MonoBehaviour {
 
     private void ClearAnswers()
     {
-        for (int i = 0; i < answers.Length; i++)
-        {
-            if (answers[i] != null) DestroyImmediate(answers[i]);
-            //answers = null;
-        }
+        // todo - testing, need to refactor
+        GameObject o1 = answers[0];
+        if (o1 != null) Destroy(o1);
+
+        GameObject o2 = answers[1];
+        if (o2 != null) Destroy(o2);
+
+        GameObject o3 = answers[2];
+        if (o3 != null) Destroy(o3);
+
+        GameObject o4 = answers[3];
+        if (o4 != null) Destroy(o4);
+
+        GameObject o5 = answers[4];
+        if (o5 != null) Destroy(o5);
     }
 }
 
@@ -378,3 +300,60 @@ public static class TestClass
 //private Material item2Material = null;
 //private Material item3Material = null;
 //private Material item4Material = null;
+
+
+//public void ChangeTargetColor(string targetName, string colorName)
+//{
+//    Debug.Log(string.Format("GameManager.ChangeTargetColor target: {0}, color: {1}", targetName, colorName));
+
+//    var targetMaterial = FindTarget(targetName);
+//    if (targetMaterial == null)
+//    {
+//        Debug.Log("GameManager.ChangeTargetColor target is null");
+//    }
+//    else
+//    {
+//        switch (colorName)
+//        {
+//            case "red":
+//                {
+//                    targetMaterial.color = Color.red;
+//                    break;
+//                }
+//            case "blue":
+//                {
+//                    targetMaterial.color = Color.blue;
+//                    break;
+//                }
+//            case "green":
+//                {
+//                    targetMaterial.color = Color.green;
+//                    break;
+//                }
+//            case "yellow":
+//                {
+//                    targetMaterial.color = Color.yellow;
+//                    break;
+//                }
+//            default:
+//                {
+//                    break;
+//                }
+//        }
+//    }
+//}
+
+//private Material FindTarget(string name)
+//{
+//    //Debug.Log(string.Format("GameManager.FindTarget name: {0}", name));
+
+//    //switch (name)
+//    //{
+//    //    case "PositionOne": return item1Material;
+//    //    case "PositionTwo": return item2Material;
+//    //    case "PositionThree": return item3Material;
+//    //    case "PositionFour": return item4Material;
+//    //    default: return null;
+//    //}
+//    return null;
+//}

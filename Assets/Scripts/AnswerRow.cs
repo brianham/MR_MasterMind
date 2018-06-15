@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using UnityEngine;
 
 public class AnswerRow : MonoBehaviour {
@@ -44,19 +42,6 @@ public class AnswerRow : MonoBehaviour {
     public void SetByPosition(int index, GameColor color)
     {
         if (index < GameManager.ANSWER_COUNT) colors[index] = color;
-    }
-
-    public Material GetMaterialForColor(GameColor color)
-    {
-        return null;
-        //switch (color)
-        //{
-        //    case GameColor.Blue: return item1Material;
-        //    case GameColor.Green: return item2Material;
-        //    case GameColor.Red: return item3Material;
-        //    case GameColor.Yellow: return item4Material;
-        //    default: return null;
-        //}
     }
 
     public bool IsValid()
