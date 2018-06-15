@@ -11,7 +11,7 @@ public class LuisManager : MonoBehaviour
 
     // MasterMindLUIS 
     string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/11c79c29-8289-45ff-9c97-797655aaed8b?subscription-key=1ec44d85ed7a4152b3f4e4a5c3c17bfa&verbose=true&timezoneOffset=0&q=";
-    
+
     // BrianLanguageUnderstandingService
     //string luisEndpoint = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/e55cc38f-5070-450a-8d2d-8ae4239a6935?subscription-key=e87015cabeeb45dca44eb179d00eb275&verbose=true&timezoneOffset=-480&q=";
 
@@ -28,8 +28,6 @@ public class LuisManager : MonoBehaviour
     /// </summary>
     public IEnumerator SubmitRequestToLuis(string dictationResult)
     {
-        WWWForm webForm = new WWWForm();
-
         string queryString;
 
         queryString = string.Concat(Uri.EscapeDataString(dictationResult));
@@ -42,27 +40,13 @@ public class LuisManager : MonoBehaviour
 
             long responseCode = unityWebRequest.responseCode;
 
-            try
-            {
-                using (Stream stream = GenerateStreamFromString(unityWebRequest.downloadHandler.text))
-                {
-                    StreamReader reader = new StreamReader(stream);
+            AnalysedQuery analysedQuery = JsonUtility.FromJson<AnalysedQuery>(unityWebRequest.downloadHandler.text);
 
-                    AnalysedQuery analysedQuery = new AnalysedQuery();
-
-                    analysedQuery = JsonUtility.FromJson<AnalysedQuery>(unityWebRequest.downloadHandler.text);
-
-                    //analyse the elements of the response 
-                    AnalyseResponseElements(analysedQuery);
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.Log("Luis Request Exception Message: " + exception.Message);
-            }
-
-            yield return null;
+            //analyse the elements of the response 
+            AnalyseResponseElements(analysedQuery);
         }
+
+        MicrophoneManager.instance.StartCapturingAudio();
     }
 
     public static Stream GenerateStreamFromString(string receivedString)
@@ -94,7 +78,7 @@ public class LuisManager : MonoBehaviour
             if (!entityDic.ContainsKey(ed.type))
             {
                 entityDic.Add(ed.type, ed.entity);
-            }            
+            }
         }
 
         // Depending on the topmost recognised intent, read the entities name
@@ -112,7 +96,7 @@ public class LuisManager : MonoBehaviour
                             case "PositionOne":
                             case "PositionTwo":
                             case "PositionThree":
-                            case "PositionFour":                            
+                            case "PositionFour":
                                 {
                                     target = pair.Key;
                                     break;
@@ -131,13 +115,13 @@ public class LuisManager : MonoBehaviour
                         }
                     }
 
-                    Debug.Log(string.Format("LuisManager.AnalyseResponseElements target:{0}, color:{1}", target, color));                    
+                    Debug.Log(string.Format("LuisManager.AnalyseResponseElements target:{0}, color:{1}", target, color));
 
                     if (!string.IsNullOrEmpty(target) && !string.IsNullOrEmpty(color))
                     {
                         GameManager.instance.ChangeTargetColor(target, color);
                     }
-                    
+
                     break;
                 }
             case "ChangeObjectColorShortcutIntent":

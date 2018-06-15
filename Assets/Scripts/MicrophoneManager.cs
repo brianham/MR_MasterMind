@@ -19,6 +19,10 @@ public class MicrophoneManager : MonoBehaviour
 
         // allows this class instance to behave like a singleton
         instance = this;
+
+        dictationRecognizer = new DictationRecognizer();
+        dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+        dictationRecognizer.DictationError += DictationRecognizer_DictationError;
     }
 
     void Start()
@@ -40,11 +44,20 @@ public class MicrophoneManager : MonoBehaviour
     /// </summary>
     public void StartCapturingAudio()
     {
-        dictationRecognizer = new DictationRecognizer();
-        dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
-        dictationRecognizer.DictationError += DictationRecognizer_DictationError;
         dictationRecognizer.Start();
         Debug.Log("MicrophoneManager - Capturing Audio...");
+    }
+
+    public void StopCapturingAudio()
+    {
+        dictationRecognizer.Stop();
+        Debug.Log("MicrophoneManager - Stop capture");
+    }
+
+    public void RestartCapturingAudio()
+    {
+        StopCapturingAudio();
+        StartCapturingAudio();
     }
 
     /// <summary>
@@ -52,6 +65,7 @@ public class MicrophoneManager : MonoBehaviour
     /// </summary>
     private void DictationRecognizer_DictationResult(string dictationCaptured, ConfidenceLevel confidence)
     {
+        StopCapturingAudio();
         Debug.Log("MicrophoneManager.DictationRecognizer_DictationResult");
         //request = StartCoroutine(LuisManager.instance.SubmitRequestToLuis(dictationCaptured));
         StartCoroutine(LuisManager.instance.SubmitRequestToLuis(dictationCaptured));
@@ -66,6 +80,8 @@ public class MicrophoneManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        dictationRecognizer.DictationResult -= DictationRecognizer_DictationResult;
+        dictationRecognizer.DictationError -= DictationRecognizer_DictationError;
         dictationRecognizer.Dispose();
     }
 }
